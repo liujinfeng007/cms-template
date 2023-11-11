@@ -2,7 +2,7 @@ import { router } from '@/router/index'
 import { useAuth } from '@/stores/auth'
 import { getPermissionRoutes } from '@/api/auth'
 import { menuRoutes } from '@/router/routes'
-const routes: unknown[] = [] //该路由数组用于给cms菜单赋值
+const routes: { name: string }[] = [] //该路由数组用于给cms菜单赋值
 
 /**
  * 生成对应用户的权限路由
