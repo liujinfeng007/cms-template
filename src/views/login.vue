@@ -3,6 +3,8 @@
     <a-form
       :model="formState"
       name="basic"
+      :label-col="{ span: 6 }"
+      :wrapper-col="{ span: 12 }"
       autocomplete="off"
       @finish="onFinish"
       @finishFailed="onFinishFailed"
@@ -25,11 +27,10 @@
         <a-input-password v-model:value="formState.password" />
       </a-form-item>
 
-      <a-form-item name="remember">
+      <a-form-item name="remember" :wrapper-col="{ offset: 6, span: 12 }">
         <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
       </a-form-item>
-
-      <a-form-item>
+      <a-form-item :wrapper-col="{ offset: 6, span: 12 }">
         <a-button type="primary" html-type="submit">Submit</a-button>
       </a-form-item>
     </a-form>
@@ -59,16 +60,18 @@ const onFinish = async (values: any) => {
   console.log('Success:', values)
   //todo 调用登录接口，存储用户token,获取用户菜单权限，添加路由，跳转页面
   store.$patch({
-    token: ''
+    token: 'xs'
   })
-  await dynamicRoutes()
-  const flag = routes.find((item: any) => {
-    return item.path === route.query.redirect
-  })
-  const name = flag ? flag.name : routes[0].name
-  await router.push({
-    name: name
-  })
+  const res = await dynamicRoutes()
+  if (res) {
+    const flag = routes.find((item: any) => {
+      return item.path === route.query.redirect
+    })
+    const name = flag ? flag.name : routes[0].name
+    await router.push({
+      name: name
+    })
+  }
 }
 
 const onFinishFailed = (errorInfo: any) => {
@@ -92,7 +95,7 @@ const onFinishFailed = (errorInfo: any) => {
   }
   .form {
     padding: 50px;
-    width: 800px;
+    width: 500px;
     margin: 0 auto;
     background: #ffffff;
     border-radius: 15px;

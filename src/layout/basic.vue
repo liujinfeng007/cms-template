@@ -19,27 +19,9 @@
         :theme="theme"
         mode="inline"
         class="menu-layout"
+        :items="menuList"
+        @click="onMenuClick"
       >
-        <template v-for="item in menuList" :key="item.key">
-          <a-menu-item v-if="!item?.children?.length" :key="item.key" @click="onMenuClick(item)">
-            <component :is="item.icon"></component>
-            <span class="nav-text">{{ item.name }}</span>
-          </a-menu-item>
-          <a-sub-menu v-else :key="item.openKey">
-            <template #title>
-              <component :is="item.icon"></component>
-              <span class="nav-text">{{ item.name }}</span>
-            </template>
-            <a-menu-item
-              v-for="_item in item.children"
-              :key="_item.key"
-              @click="onMenuClick(_item)"
-            >
-              <component :is="_item.icon"></component>
-              <span class="nav-text">{{ _item.name }}</span>
-            </a-menu-item>
-          </a-sub-menu>
-        </template>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -87,10 +69,12 @@
         <div id="unique-container">
           <div class="view-outer">
             <router-view class="router-view" v-slot="{ Component }">
-              <keep-alive v-if="$route.meta.keepAlive">
-                <component :is="Component"></component>
-              </keep-alive>
-              <component v-else :is="Component"></component>
+              <transition name="fade">
+                <keep-alive v-if="$route.meta.keepAlive">
+                  <component :is="Component" :key="$route.meta.name"></component>
+                </keep-alive>
+                <component v-else :is="Component"></component>
+              </transition>
             </router-view>
           </div>
         </div>
@@ -99,7 +83,7 @@
   </a-layout>
 </template>
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -113,21 +97,21 @@ import { useFullscreen } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import avatarUrl from '@/assets/img/avatar.png'
 import type { BaseType, MenuType } from '@/types/DataType'
-import { generatorMenu } from '@/utils/generator-menu'
 import { useAuth } from '@/stores/auth'
 import { fetchLogout } from '@/api/auth'
 import { routes } from '@/router/dynamic-routes'
 const selectedKeys = ref<(string | undefined)[]>()
-const openKeys = ref<(string | undefined)[]>()
+const openKeys = ref<any>([''])
 const collapsed = ref<boolean>(false)
 const headerHeight = '64px' //顶部高度
 const statusHeight = '0' //状态栏高度
 const footerHeight = '0' //底部高度
+import { generatorMenu } from '@/utils/generator-menu'
 
 const { isFullscreen, toggle } = useFullscreen()
 const theme = ref<MenuTheme>('dark')
 
-const menuList: MenuType[] = generatorMenu()
+const menuList = generatorMenu()
 const store = useAuth()
 const router = useRouter()
 const route = useRoute()
@@ -139,6 +123,7 @@ watch(
   () => {
     const selected = route.name as string
     selectedKeys.value = [selected]
+    openKeys.value = route.meta.super ?? ['']
   },
   {
     immediate: true
@@ -146,9 +131,9 @@ watch(
 )
 // 菜单点击
 const onMenuClick = (item: BaseType) => {
-  item?.path &&
+  item?.key &&
     router.push({
-      path: item.path
+      name: item.key
     })
 }
 
@@ -200,6 +185,9 @@ const handleDropMenuClick = async (e: any) => {
       position: relative;
       height: calc(100vh - v-bind(headerHeight));
       overflow: auto;
+      .nav-text {
+        user-select: none;
+      }
     }
   }
   .header-layout {

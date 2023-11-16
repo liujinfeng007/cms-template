@@ -1,6 +1,8 @@
 <template>
   <a-config-provider :locale="locale">
-    <component :is="layout"></component>
+    <transition name="fade">
+      <component :is="layout"></component>
+    </transition>
   </a-config-provider>
 </template>
 <script setup lang="ts">
