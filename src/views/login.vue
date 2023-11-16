@@ -1,48 +1,63 @@
 <template>
-  <div class="form-wrap">
+  <div class="form-container">
     <a-form
       :model="formState"
-      name="basic"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 12 }"
-      autocomplete="off"
+      name="normal_login"
+      class="login-form"
       @finish="onFinish"
       @finishFailed="onFinishFailed"
-      class="form"
     >
-      <div class="login-tips">欢迎登录</div>
+      <div class="login-tip">欢迎登录</div>
       <a-form-item
         label="Username"
         name="username"
         :rules="[{ required: true, message: 'Please input your username!' }]"
+        :label-col="{ span: 7 }"
       >
-        <a-input v-model:value="formState.username" />
+        <a-input v-model:value="formState.username">
+          <template #prefix>
+            <UserOutlined class="site-form-item-icon" />
+          </template>
+        </a-input>
       </a-form-item>
 
       <a-form-item
         label="Password"
         name="password"
         :rules="[{ required: true, message: 'Please input your password!' }]"
+        :label-col="{ span: 7 }"
       >
-        <a-input-password v-model:value="formState.password" />
+        <a-input-password v-model:value="formState.password">
+          <template #prefix>
+            <LockOutlined class="site-form-item-icon" />
+          </template>
+        </a-input-password>
       </a-form-item>
 
-      <a-form-item name="remember" :wrapper-col="{ offset: 6, span: 12 }">
-        <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+      <a-form-item>
+        <a-form-item name="remember" no-style>
+          <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+        </a-form-item>
+        <a class="login-form-forgot" href="">Forgot password</a>
       </a-form-item>
-      <a-form-item :wrapper-col="{ offset: 6, span: 12 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
+
+      <a-form-item>
+        <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
+          Log in
+        </a-button>
+        Or
+        <a href="">register now!</a>
       </a-form-item>
     </a-form>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { router } from '@/router'
 import { useAuth } from '@/stores/auth'
 import { dynamicRoutes, routes } from '@/router/dynamic-routes'
 import { useRoute } from 'vue-router'
-
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 interface FormState {
   username: string
   password: string
@@ -77,28 +92,34 @@ const onFinish = async (values: any) => {
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo)
 }
+
+const disabled = computed(() => {
+  return !(formState.username && formState.password)
+})
 </script>
 <style lang="scss" scoped>
-.form-wrap {
-  width: 100%;
+.form-container {
   height: 100vh;
-  background: url('https://picsum.photos/seed/picsum/200/300') no-repeat;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background: url('https://picsum.photos/seed/picsum/1920/1080') no-repeat;
   background-size: 100% 100%;
-  .login-tips {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 22px;
-  }
-  .form {
-    padding: 50px;
-    width: 500px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 15px;
-  }
+}
+.login-form {
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 15px;
+}
+.login-tip {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
 }
 </style>

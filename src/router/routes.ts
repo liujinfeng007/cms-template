@@ -8,9 +8,14 @@ export const menuRoutes = [
   {
     path: '/demo',
     name: 'demo',
-    component: () => import('@/views/demo/index.vue'),
-    redirect: {
-      name: 'demoChild'
+    redirect: (to: any) => {
+      const { hash, params, query } = to
+      return {
+        name: 'demoChild',
+        query,
+        params,
+        hash
+      }
     },
     meta: {
       title: 'Demo',
@@ -22,40 +27,23 @@ export const menuRoutes = [
       {
         path: 'demoChild',
         name: 'demoChild',
-        component: () => import('@/views/demo-child/index.vue'),
-        redirect: {
-          name: 'demoChildChild'
-        },
+        component: () => import('@/views/demoChild.vue'),
         meta: {
-          title: 'DemoChild',
+          title: 'demoChild',
           layout: 'basic',
           icon: ControlOutlined,
           keepAlive: false,
           super: ['demo']
-        },
-        children: [
-          {
-            path: 'demoChildChild',
-            name: 'demoChildChild',
-            component: () => import('@/views/demo-child/index.vue'),
-            meta: {
-              title: 'demoChildChild',
-              layout: 'basic',
-              icon: ControlOutlined,
-              keepAlive: false,
-              super: ['demo', 'demoChild'] //父级name集合，用于menu组件的openKeys赋值
-            }
-          }
-        ]
+        }
       }
     ]
   },
   {
-    path: '/xx',
-    name: 'xx',
-    component: () => import('@/views/demo/index.vue'),
+    path: '/demo1',
+    name: 'demo1',
+    component: () => import('@/views/demo1.vue'),
     meta: {
-      title: 'xx',
+      title: 'demo1',
       layout: 'basic',
       icon: ControlOutlined,
       keepAlive: false

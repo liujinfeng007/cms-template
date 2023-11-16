@@ -9,7 +9,7 @@ export const getPermissionRoutes = (token: string) => {
   //   }
   // })
   return Promise.resolve({
-    data: ['demo', 'demoChild', 'demoChildChild', 'xx']
+    data: ['demo', 'demo1', 'demoChild']
   })
 }
 // 退出登录

@@ -83,7 +83,7 @@
   </a-layout>
 </template>
 <script lang="ts" setup>
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
