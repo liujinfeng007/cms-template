@@ -11,7 +11,7 @@
         <div v-if="collapsed" class="logo icon">
           <BankTwoTone />
         </div>
-        <div class="title logo" v-else>数智网信用户中台</div>
+        <div class="title logo" v-else>CMS</div>
       </div>
       <a-menu
         v-model:selectedKeys="selectedKeys"

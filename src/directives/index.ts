@@ -9,7 +9,6 @@ export async function setupDirectives(app: App) {
   const store = useAuth()
   const { data } = await getPermissionButtons(store.token)
   permissionArr.length = 0
-  permissionArr.push(...data)
-
+  permissionArr.push(...(data as never[]))
   app.directive('permission', permission)
 }

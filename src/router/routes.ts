@@ -1,4 +1,4 @@
-import { ControlOutlined } from '@ant-design/icons-vue'
+import { SlidersTwoTone, FileTextTwoTone } from '@ant-design/icons-vue'
 
 /**
  * 菜单路由
@@ -20,7 +20,7 @@ export const menuRoutes = [
     meta: {
       title: 'Demo',
       layout: 'basic',
-      icon: ControlOutlined,
+      icon: SlidersTwoTone,
       keepAlive: false
     },
     children: [
@@ -31,7 +31,7 @@ export const menuRoutes = [
         meta: {
           title: 'demoChild',
           layout: 'basic',
-          icon: ControlOutlined,
+          icon: FileTextTwoTone,
           keepAlive: false,
           super: ['demo']
         }
@@ -45,7 +45,7 @@ export const menuRoutes = [
     meta: {
       title: 'demo1',
       layout: 'basic',
-      icon: ControlOutlined,
+      icon: SlidersTwoTone,
       keepAlive: false
     }
   }
