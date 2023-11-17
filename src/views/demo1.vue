@@ -1,5 +1,5 @@
 <template>
-  <div>demo1</div>
+  <div v-permission="'delete'">demo1</div>
 </template>
 <script setup lang="ts"></script>
 
