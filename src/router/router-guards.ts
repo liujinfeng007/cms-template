@@ -10,7 +10,10 @@ export function setRouterGuards(router: any) {
     if (to.name !== 'login') {
       if (!useAuth().token) {
         next({
-          name: 'login'
+          name: 'login',
+          query: {
+            redirect: to.fullPath
+          }
         })
       }
     }
