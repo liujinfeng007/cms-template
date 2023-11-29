@@ -3,7 +3,7 @@ import { SlidersTwoTone, FileTextTwoTone } from '@ant-design/icons-vue'
 /**
  * 菜单路由
  */
-/* todo 【请务必确保路由的name唯一,切访问路径采用小驼峰命名方式】  */
+/* todo 【请务必确保路由的name唯一,且访问路径采用小驼峰命名方式】  */
 export const menuRoutes = [
   {
     path: '/demo',
